@@ -1,22 +1,32 @@
 module.exports = function toReadable(number) {
+  // проверка на 0
   if (number === 0) {
     return 'zero'
   }
+  // в случае, если число < 10, то соответствующая функция
   else if (number < 10) {
 
     return numberBelow10(number);
 
-  } else if (number >= 10 && number < 20) {
+  }
+  // в случае, если число от 10 до 20, то соответствующая функция
+  else if (number >= 10 && number < 20) {
 
     return numberBetween10And20(number);
 
-  } else if (number >= 20 && number < 100) {
+  }
+  //  если число от 20 до 100. находим отдельно десятки и единицы. для десяток своя функция, для единиц своя (numberBelow10, ранее создана)
+  // итоговое значение выводим через конкатенацию. Чтобы не вылезал лишний пробел, в случае если единицы=0, то ставим тернарный оператор на проверку этого случая
+  else if (number >= 20 && number < 100) {
 
     let ten = Math.floor(number / 10) * 10;
     let unit = (number % 10);
     return (numberBetween20And100(ten) + (unit === 0 ? ('') : (' ' + numberBelow10(unit))))
 
-  } else {
+  } else
+  // для 3х значных чисел решается уже через существующие функции. Отельно находим сотни и пропускаем через функцию единиц + hundred через тернарный оператор.
+  // оставшаяся часть числа решается аналогично первой части программы
+  {
     let hundred = Math.floor(number / 100);
     let secondpart = number - hundred * 100;
     let temp = 0;
@@ -36,6 +46,7 @@ module.exports = function toReadable(number) {
       else { temp = temp = (numberBetween20And100(ten) + ' ' + numberBelow10(unit)) }
 
     } else if (secondpart === 0) {
+      // устаревшая ветвь кода (для истории)
       temp = '';
     }
 
@@ -45,6 +56,7 @@ module.exports = function toReadable(number) {
     return (numberBelow10(hundred) + (secondpart === 0 ? (' hundred') : (' hundred ' + temp)));
   }
 
+  // функция вывода числа до 10
   function numberBelow10(input) {
     let numberBelow10 = '';
     switch (input) {
@@ -79,7 +91,7 @@ module.exports = function toReadable(number) {
     }
     return numberBelow10;
   }
-
+  // функция вывода числа от 10 до 20
   function numberBetween10And20(input) {
     let numberBetween10And20 = 0;
     switch (input) {
@@ -117,7 +129,7 @@ module.exports = function toReadable(number) {
 
     return numberBetween10And20;
   }
-
+  // функция вывода числа от 20 до 100
   function numberBetween20And100(input) {
     let numberbetween20and100 = 0;
     switch (input) {
